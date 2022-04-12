@@ -1,0 +1,65 @@
+.featured,
+.trending {
+  flex-wrap: wrap;
+  gap: 5vh 10vw;
+}
+
+.featured__heading {
+  text-align: center;
+}
+
+.trending__heading {
+  text-align: center;
+}
+
+.shadow--none {
+  box-shadow: none;
+}
+
+.shadow-hover--none:hover {
+  box-shadow: none;
+}
+
+.card__actions > .btn {
+  padding: 0.5rem;
+}
+
+.card__image > img {
+  height: 100%;
+}
+
+.trending .card__image > img {
+  height: 40vh;
+  object-fit: contain;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .search__container {
+    order: 2;
+    width: 100%;
+  }
+
+  .carousel {
+    height: 25vh;
+  }
+
+  .header--std .header__title {
+    font-size: 1.25rem;
+  }
+
+  .header--std .header__title {
+    font-size: 1.25rem;
+  }
+
+  .header__btn a {
+    height: 2rem;
+    padding: 0 0.5rem;
+  }
+
+  li.header__btn {
+    font-size: 1rem;
+    padding: 0;
+    margin: 0;
+  }
+}
