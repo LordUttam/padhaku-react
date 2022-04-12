@@ -4,7 +4,7 @@ import trendImg3 from "assets/images/book-covers/auto-yogi.jpg";
 import trendImg4 from "assets/images/book-covers/chanakya-neeti.jpg";
 import trendImg5 from "assets/images/book-covers/yolo.jpg";
 import trendImg6 from "assets/images/book-covers/savarkar2.jpg";
-import TrendingCard from "components/cards/trending-card";
+import { TrendingCard } from "components/cards/cards";
 
 export default function Trending() {
   return (

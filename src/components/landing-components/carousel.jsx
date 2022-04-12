@@ -1,10 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import "styles/carousel.css";
-
-import carousel1 from "assets/images/carousel/book-sale-1.png";
-import carousel2 from "assets/images/carousel/book-sale-2.png";
-import carousel3 from "assets/images/carousel/book-sale-3.png";
+import { carousel1, carousel2, carousel3 } from "data/carousel";
 
 function CarouselSlide(props) {
   const carouselImg = props.carouselImg;

@@ -4,7 +4,7 @@ import featImg3 from "assets/images/categories/selfhelp.png";
 import featImg4 from "assets/images/categories/schoolbooks.jpg";
 import featImg5 from "assets/images/categories/classics.jpg";
 import featImg6 from "assets/images/categories/poetry.jpg";
-import FeaturedCard from "components/cards/featured-card";
+import { FeaturedCard } from "components/cards/cards";
 
 export default function Featured() {
   return (
