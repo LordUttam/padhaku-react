@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "styles/carousel.css";
 import { carousel1, carousel2, carousel3 } from "data/carousel";
 
@@ -7,9 +8,9 @@ function CarouselSlide(props) {
   const carouselImg = props.carouselImg;
   return (
     <li className="carousel__slide">
-      <a href="./pages/products.html">
+      <Link to="./pages/products.html">
         <img src={carouselImg} alt="Sale poster" className="carousel__image" />
-      </a>
+      </Link>
     </li>
   );
 }

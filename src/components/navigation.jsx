@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 export default function Navigation() {
   return (
     <header className="header--std">
       <nav className="nav--std flex__wrap--wrap">
         <ul className="header__list--align-start">
           <li className="header__title">
-            <a href="./index.html">Padhaku</a>
+            <Link to="./index.html">Padhaku</Link>
           </li>
         </ul>
         <div className="search__container flex items--center justify--center">
@@ -21,19 +23,19 @@ export default function Navigation() {
         </div>
         <ul className="header__list--align-end">
           <li className="color--primary header__btn m--x-0-5">
-            <a href="./pages/login.html" className="p--x-1">
+            <Link to="./pages/login.html" className="p--x-1">
               Login
-            </a>
+            </Link>
           </li>
           <li className="header__btn m--x-0-5">
-            <a href="./pages/wishlist.html" className="p--x-1">
+            <Link to="./pages/wishlist.html" className="p--x-1">
               <i className="bx bxs-heart"></i>Wishlist
-            </a>
+            </Link>
           </li>
           <li className="header__btn m--x-0-5">
-            <a href="./pages/cart.html" className="p--x-1">
+            <Link to="./pages/cart.html" className="p--x-1">
               <i className="bx bxs-cart"></i>Cart
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
