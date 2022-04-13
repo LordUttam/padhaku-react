@@ -1,0 +1,153 @@
+.card__container {
+  width: 25%;
+}
+
+.products .card {
+  width: 90%;
+}
+
+.card__heart-btn {
+  position: absolute;
+  top: 2%;
+  right: 2%;
+  width: 3rem;
+  height: 3rem;
+
+  color: var(--error-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.card__heart-btn i {
+  font-size: 2rem;
+}
+
+.products {
+  width: 100%;
+}
+
+.products .card__image > img {
+  height: 40vh;
+  object-fit: contain;
+}
+
+.filters {
+  flex-basis: 20%;
+  border-right: 1px solid var(--accent-color);
+}
+
+hr {
+  width: 100%;
+}
+
+.filters > .heading {
+  border-bottom: 2px solid var(--accent-color);
+}
+
+.filters > div {
+  width: 100%;
+}
+
+.filters__btn {
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  right: 0;
+  display: none;
+}
+
+.filters--mobile {
+  position: fixed;
+  z-index: 5;
+  width: 70%;
+  display: none;
+  max-height: 80vh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background-color: var(--base-color);
+}
+
+.filters--mobile ul {
+  border-radius: 4px;
+  border: 1px solid var(--accent-color);
+  height: 100%;
+  width: 100%;
+}
+
+.filters--mobile ul li {
+  background-color: var(--base-color);
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--accent-color);
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .cart .card .card__image {
+    flex-basis: auto;
+  }
+  .cart {
+    flex-basis: 100%;
+    flex-wrap: wrap;
+  }
+  .card__container {
+    flex-basis: 100%;
+  }
+  .cart .card .card__image {
+    height: 15rem;
+    aspect-ratio: 1;
+    flex-basis: auto;
+  }
+
+  .filters {
+    display: none;
+  }
+  .filters--mobile ul li {
+    width: 75%;
+  }
+  .filters--mobile > div:first-child {
+    margin-top: 75vh;
+  }
+
+  .filters__btn {
+    display: flex;
+  }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+  .card__container {
+    flex-basis: 100%;
+  }
+  .search__container {
+    order: 2;
+  }
+  .filters--mobile {
+    display: none;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+  .nav--std {
+    flex-wrap: nowrap;
+  }
+  .cart {
+    flex-basis: 100%;
+  }
+  .card__container {
+    flex-basis: 50%;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+  .card__container {
+    flex-basis: 33%;
+  }
+}
+
+@media only screen and (min-width: 2160px) {
+  .card__container {
+    flex-basis: 20%;
+  }
+}

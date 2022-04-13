@@ -9,11 +9,7 @@ export default function Navigation() {
         </ul>
         <div className="search__container flex items--center justify--center">
           <div className="input__container flex--inline">
-            <input
-              type="text"
-              className="input"
-              placeholder="Search Here"
-            ></input>
+            <input type="text" className="input" placeholder="Search Here" />
           </div>
           <button className="search__btn">
             <i className="bx bx-search"></i>
