@@ -2,7 +2,10 @@ import "./sidebar.css";
 import { useProducts } from "contexts/product-context";
 
 function SortComponent() {
-  const { state, dispatch } = useProducts();
+  const {
+    state: { sortBy },
+    dispatch,
+  } = useProducts();
   return (
     <div className="flex flex__dir--col">
       <h4 className="heading h--4 m__t-1">Sort By</h4>
@@ -11,7 +14,7 @@ function SortComponent() {
           <input
             id="htlBtn"
             type="radio"
-            checked={state.sortBy === "HTL"}
+            checked={sortBy === "HTL"}
             onChange={() => dispatch({ type: "SORT", payload: "HTL" })}
           />
           <label htmlFor="htlBtn">High to Low</label>
@@ -20,7 +23,7 @@ function SortComponent() {
           <input
             id="lthBtn"
             type="radio"
-            checked={state.sortBy === "LTH"}
+            checked={sortBy === "LTH"}
             onChange={() => dispatch({ type: "SORT", payload: "LTH" })}
           />
 
@@ -81,7 +84,10 @@ function PriceComponent() {
 }
 
 function CategoryFilter() {
-  const { state, dispatch } = useProducts();
+  const {
+    state: { categories },
+    dispatch,
+  } = useProducts();
   return (
     <div className="flex flex__dir--col">
       <h4 className="heading h--4 m__t-1">Categories</h4>
@@ -90,7 +96,7 @@ function CategoryFilter() {
           <input
             type="checkbox"
             id="selfhelpBtn"
-            checked={state.categories["selfhelp"] === true}
+            checked={categories["selfhelp"] === true}
             onChange={() =>
               dispatch({ type: "CATEGORIES", payload: "selfhelp" })
             }
@@ -101,7 +107,7 @@ function CategoryFilter() {
           <input
             type="checkbox"
             id="poetryBtn"
-            checked={state.categories["poetry"] === true}
+            checked={categories["poetry"] === true}
             onChange={() => dispatch({ type: "CATEGORIES", payload: "poetry" })}
           />
           <label htmlFor="poetryBtn">Poetry</label>
@@ -110,7 +116,7 @@ function CategoryFilter() {
           <input
             type="checkbox"
             id="fictionBtn"
-            checked={state.categories["fiction"] === true}
+            checked={categories["fiction"] === true}
             onChange={() =>
               dispatch({ type: "CATEGORIES", payload: "fiction" })
             }
@@ -121,7 +127,7 @@ function CategoryFilter() {
           <input
             type="checkbox"
             id="nonfiction"
-            checked={state.categories["nonfiction"] === true}
+            checked={categories["nonfiction"] === true}
             onChange={() =>
               dispatch({ type: "CATEGORIES", payload: "nonfiction" })
             }
@@ -132,7 +138,7 @@ function CategoryFilter() {
           <input
             type="checkbox"
             id="examsBtn"
-            checked={state.categories["exams"] === true}
+            checked={categories["exams"] === true}
             onChange={() => dispatch({ type: "CATEGORIES", payload: "exams" })}
           />
           <label htmlFor="examsBtn">Exam Preparation</label>
@@ -143,7 +149,10 @@ function CategoryFilter() {
 }
 
 function RatingComponent() {
-  const { state, dispatch } = useProducts();
+  const {
+    state: { rating },
+    dispatch,
+  } = useProducts();
   return (
     <div className="flex flex__dir--col fiters__ratings">
       <label className="heading h--4 m__t-1">Ratings</label>
@@ -152,7 +161,7 @@ function RatingComponent() {
           <input
             type="radio"
             id="rating4"
-            checked={state.rating === "4"}
+            checked={rating === "4"}
             onChange={() => dispatch({ type: "RATING", payload: "4" })}
           />
           <label htmlFor="rating4">4 stars & above</label>
@@ -161,7 +170,7 @@ function RatingComponent() {
           <input
             type="radio"
             id="rating3"
-            checked={state.rating === "3"}
+            checked={rating === "3"}
             onChange={() => dispatch({ type: "RATING", payload: "3" })}
           />
           <label htmlFor="rating3">3 stars & above</label>
@@ -170,7 +179,7 @@ function RatingComponent() {
           <input
             type="radio"
             id="rating2"
-            checked={state.rating === "2"}
+            checked={rating === "2"}
             onChange={() => dispatch({ type: "RATING", payload: "2" })}
           />
           <label htmlFor="rating2">2 stars & above</label>
@@ -179,7 +188,7 @@ function RatingComponent() {
           <input
             type="radio"
             id="rating1"
-            checked={state.rating === "1"}
+            checked={rating === "1"}
             onChange={() => dispatch({ type: "RATING", payload: "1" })}
           />
           <label htmlFor="rating1">1 star & above</label>
@@ -190,7 +199,10 @@ function RatingComponent() {
 }
 
 function CoverTypeComponent() {
-  const { state, dispatch } = useProducts();
+  const {
+    state: { covertype },
+    dispatch,
+  } = useProducts();
   return (
     <div className="flex flex__dir--col fiters__cover-type m__b-4">
       <h4 className="heading h--4 m__t-1">Cover type</h4>
@@ -199,7 +211,7 @@ function CoverTypeComponent() {
           <input
             type="checkbox"
             id="hardcoverBtn"
-            checked={state.covertype["hardcover"] === true}
+            checked={covertype["hardcover"] === true}
             onChange={() =>
               dispatch({ type: "COVERTYPE", payload: "hardcover" })
             }
@@ -210,7 +222,7 @@ function CoverTypeComponent() {
           <input
             type="checkbox"
             id="paperbackBtn"
-            checked={state.covertype["paperback"] === true}
+            checked={covertype["paperback"] === true}
             onChange={() =>
               dispatch({ type: "COVERTYPE", payload: "paperback" })
             }

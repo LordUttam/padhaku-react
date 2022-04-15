@@ -1,22 +1,17 @@
 const stockFilter = (products, includeOutStock) => {
-  const filteredProducts = includeOutStock
+  return includeOutStock
     ? products
     : products.filter((product) => product.inStock === true);
-  return filteredProducts;
 };
 
 const speedFilter = (products, shouldBeFast) => {
-  const fastProds = shouldBeFast
+  return shouldBeFast
     ? products.filter((product) => product.fastDelivery === true)
     : products;
-  return fastProds;
 };
 
 const priceFilter = (products, price) => {
-  const priceFilteredProducts = products.filter(
-    (product) => Number(product.price) <= price
-  );
-  return priceFilteredProducts;
+  return products.filter((product) => Number(product.price) <= price);
 };
 
 const categoryFilter = (products, categories) => {
