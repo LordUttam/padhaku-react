@@ -1,11 +1,45 @@
 import "./product-listing.css";
 import "styles/main.css";
-
+import axios from "axios";
+import { useState, useEffect } from "react";
 import { Navigation, Sidebar, SidebarMobile, Footer } from "components";
-import { productData } from "data/products";
 import { ProductCard } from "components/cards/cards";
+import {
+  sorter,
+  stockFilter,
+  speedFilter,
+  priceFilter,
+  categoryFilter,
+  coverTypeFilter,
+  ratingFilter,
+} from "operations";
+import { useProducts } from "contexts/product-context";
 
 export default function Products() {
+  const [products, setProducts] = useState([]);
+  const { state } = useProducts();
+
+  const includeOutStockProds = stockFilter(products, state.includeOutStock);
+  const fastDelivery = speedFilter(includeOutStockProds, state.shouldBeFast);
+  const sortedData = sorter(fastDelivery, state.sortBy);
+  const priceFilteredData = priceFilter(sortedData, state.price);
+  const coverTypeFilteredData = coverTypeFilter(
+    priceFilteredData,
+    state.covertype
+  );
+  const categoryFilteredData = categoryFilter(
+    coverTypeFilteredData,
+    state.categories
+  );
+  const ratingFilteredData = ratingFilter(categoryFilteredData, state.rating);
+
+  useEffect(() => {
+    (async () => {
+      const response = await axios.get("/api/products");
+      setProducts(response.data.products);
+    })();
+  }, []);
+
   return (
     <>
       <Navigation />
@@ -14,15 +48,8 @@ export default function Products() {
           <Sidebar />
           <SidebarMobile />
           <section className="products flex flex__wrap--wrap p--x-2 p--y-2">
-            {productData.map((data) => (
-              <ProductCard
-                prodImg={data.prodImg}
-                bookTitle={data.bookTitle}
-                author={data.author}
-                price={data.price}
-                oldPrice={data.oldPrice}
-                key={data.id}
-              />
+            {ratingFilteredData.map((product) => (
+              <ProductCard productDetails={product} key={product._id} />
             ))}
           </section>
         </div>

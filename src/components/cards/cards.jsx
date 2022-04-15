@@ -54,12 +54,10 @@ function TrendingCard(props) {
   );
 }
 
-function ProductCard(props) {
-  const prodImg = props.prodImg;
-  const bookTitle = props.bookTitle;
-  const author = props.author;
-  const price = props.price;
-  const oldPrice = props.oldPrice;
+function ProductCard({ productDetails }) {
+  const { prodImg, bookTitle, author, price, origPrice, inStock } =
+    productDetails;
+
   return (
     <div className="card__container justify--center items--center m--y-1">
       <div className="card m--0-auto">
@@ -71,8 +69,8 @@ function ProductCard(props) {
           <h2 className="card__title">{bookTitle}</h2>
           <h3 className="card__subtitle font--gray">{author}</h3>
           <p className="card__text">
-            <span className="text--strike text--gray">₹{price}</span>
-            <span className="text--sm text--bold">₹{oldPrice}</span>
+            <span className="text--strike text--gray">₹{origPrice}</span>
+            <span className="text--sm text--bold">₹{price}</span>
           </p>
         </div>
 
@@ -84,6 +82,9 @@ function ProductCard(props) {
             Add to Cart
           </button>
         </div>
+
+        {inStock ? null : <span className="card__overlay">Out of Stock</span>}
+
         <span className="card__heart-btn flex flex--center">
           <i className="bx bxs-heart"></i>
         </span>

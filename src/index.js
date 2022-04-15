@@ -4,13 +4,20 @@ import "./index.css";
 import App from "./App";
 import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
+import { makeServer } from "./server";
+import { ProductProvider } from "contexts/product-context";
+
+// Call make Server
+makeServer();
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Router>
-      <App />
+      <ProductProvider>
+        <App />
+      </ProductProvider>
     </Router>
   </React.StrictMode>
 );
