@@ -54,4 +54,43 @@ function TrendingCard(props) {
   );
 }
 
-export { FeaturedCard, TrendingCard };
+function ProductCard({ productDetails }) {
+  const { prodImg, bookTitle, author, price, origPrice, inStock } =
+    productDetails;
+
+  return (
+    <div className="card__container justify--center items--center m--y-1">
+      <div className="card m--0-auto">
+        <div className="card__image">
+          <img src={prodImg} alt={bookTitle} />
+        </div>
+
+        <div className="card__header">
+          <h2 className="card__title">{bookTitle}</h2>
+          <h3 className="card__subtitle font--gray">{author}</h3>
+          <p className="card__text">
+            <span className="text--strike text--gray">₹{origPrice}</span>
+            <span className="text--sm text--bold">₹{price}</span>
+          </p>
+        </div>
+
+        <div className="card__actions m--y-0-5 p--y-1 btn__container">
+          <button className="btn btn--primary shadow-hover--none p--y-2">
+            Buy Now
+          </button>
+          <button className="btn btn--outline shadow-hover--none p--y-2">
+            Add to Cart
+          </button>
+        </div>
+
+        {inStock ? null : <span className="card__overlay">Out of Stock</span>}
+
+        <span className="card__heart-btn flex flex--center">
+          <i className="bx bxs-heart"></i>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+export { FeaturedCard, TrendingCard, ProductCard };

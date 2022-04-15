@@ -8,7 +8,7 @@ function CarouselSlide(props) {
   const carouselImg = props.carouselImg;
   return (
     <li className="carousel__slide">
-      <Link to="./pages/products.html">
+      <Link to="/products">
         <img src={carouselImg} alt="Sale poster" className="carousel__image" />
       </Link>
     </li>
