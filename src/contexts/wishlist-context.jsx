@@ -1,6 +1,5 @@
-import { createContext, useContext, useState, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import { wishlistReducer } from "reducers/wishlist-reducer";
-import { ProductProvider } from "./product-context";
 
 const defaultWishlistValue = { wishlistItems: [] };
 const WishlistContext = createContext(defaultWishlistValue);

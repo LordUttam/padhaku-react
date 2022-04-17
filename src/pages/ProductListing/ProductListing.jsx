@@ -13,7 +13,6 @@ import {
   ratingFilter,
 } from "operations";
 import { useProducts } from "contexts/product-context";
-import { useCart } from "contexts/cart-context";
 
 export default function Products() {
   const [products, setProducts] = useState([]);

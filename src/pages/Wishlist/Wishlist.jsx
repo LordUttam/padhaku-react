@@ -1,10 +1,8 @@
 import "./wishlist.css";
-import axios from "axios";
-import { useState, useEffect } from "react";
 import { Navigation, Footer } from "components";
 import { useWishlist } from "contexts/wishlist-context";
 import { WishlistCard } from "components/cards/cards";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Wishlist() {
   const { wishlistState } = useWishlist();
