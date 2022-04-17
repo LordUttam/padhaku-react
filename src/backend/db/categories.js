@@ -1,7 +1,5 @@
 import { v4 as uuid } from "uuid";
-import featImg1 from "assets/images/categories/bitsat.jpg";
-import featImg2 from "assets/images/categories/selfhelp.png";
-import featImg3 from "assets/images/categories/classics.jpg";
+import { featImg1, featImg2, featImg3 } from "assets/images/index";
 /**
  * Category Database can be added here.
  * You can add category of your wish with different attributes
