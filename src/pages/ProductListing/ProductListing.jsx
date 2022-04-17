@@ -1,5 +1,4 @@
 import "./product-listing.css";
-import "styles/main.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Navigation, Sidebar, SidebarMobile, Footer } from "components";
@@ -14,6 +13,7 @@ import {
   ratingFilter,
 } from "operations";
 import { useProducts } from "contexts/product-context";
+import { useCart } from "contexts/cart-context";
 
 export default function Products() {
   const [products, setProducts] = useState([]);

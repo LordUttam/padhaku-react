@@ -1,4 +1,3 @@
-import "./sidebar.css";
 import { useProducts } from "contexts/product-context";
 
 function SortComponent() {
@@ -211,9 +210,9 @@ function CoverTypeComponent() {
           <input
             type="checkbox"
             id="hardcoverBtn"
-            checked={covertype["hardcover"] === true}
+            checked={covertype["Hard Cover"] === true}
             onChange={() =>
-              dispatch({ type: "COVERTYPE", payload: "hardcover" })
+              dispatch({ type: "COVERTYPE", payload: "Hard Cover" })
             }
           />
           <label htmlFor="hardcoverBtn">Hard Cover</label>
@@ -222,9 +221,9 @@ function CoverTypeComponent() {
           <input
             type="checkbox"
             id="paperbackBtn"
-            checked={covertype["paperback"] === true}
+            checked={covertype["Paperback"] === true}
             onChange={() =>
-              dispatch({ type: "COVERTYPE", payload: "paperback" })
+              dispatch({ type: "COVERTYPE", payload: "Paperback" })
             }
           />
           <label htmlFor="paperbackBtn">Paperback</label>

@@ -6,6 +6,8 @@ import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { makeServer } from "./server";
 import { ProductProvider } from "contexts/product-context";
+import { CartProvider } from "contexts/cart-context";
+import { WishlistProvider } from "contexts/wishlist-context";
 
 // Call make Server
 makeServer();
@@ -15,9 +17,13 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Router>
-      <ProductProvider>
-        <App />
-      </ProductProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <ProductProvider>
+            <App />
+          </ProductProvider>
+        </WishlistProvider>
+      </CartProvider>
     </Router>
   </React.StrictMode>
 );

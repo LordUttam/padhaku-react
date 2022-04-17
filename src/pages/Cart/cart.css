@@ -1,0 +1,151 @@
+.cart .cart__items {
+  gap: 5vh;
+  flex-basis: 50%;
+}
+
+.cart .card__container {
+  width: 75%;
+  flex-grow: 1;
+}
+
+.cart .card {
+  width: 100%;
+}
+
+.cart .cart__items .card .card__image {
+  height: 15rem;
+  aspect-ratio: unset;
+  flex-basis: 25%;
+}
+
+.cart .card__image > img {
+  height: 100%;
+  width: auto;
+}
+
+.cart .card--horizontal {
+  height: unset;
+}
+
+.cart .card__title {
+  font-size: 2rem;
+}
+
+.cart .card__subtitle {
+  font-size: 1.5rem;
+}
+
+.cart .card__text {
+  font-size: 1.25rem;
+  color: var(--accent-color);
+}
+
+.cart .card .card__body {
+  justify-content: space-around;
+  flex-grow: 1;
+}
+
+.cart .input--qty {
+  width: 2rem;
+}
+
+.cart .quantity .btn {
+  box-sizing: border-box;
+}
+
+.cart .price-section {
+  align-self: flex-start;
+  margin-top: 10vh;
+  width: 25%;
+}
+
+.cart .price-modal {
+  width: 100%;
+}
+
+.cart .price {
+  align-self: flex-start;
+}
+
+.cart .card__badge {
+  font-size: 1.25rem;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .cart .card .card__image {
+    flex-basis: auto;
+  }
+  .cart {
+    flex-basis: 100%;
+    flex-wrap: wrap;
+  }
+  .cart .card__container {
+    flex-basis: 100%;
+  }
+  .cart .card .card__image {
+    height: 15rem;
+    aspect-ratio: 1;
+    flex-basis: auto;
+  }
+
+  .cart .price-section {
+    align-self: flex-start;
+    margin-top: 10vh;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .cart .card--horizontal {
+    flex-direction: column;
+  }
+
+  .cart .price-section {
+    align-self: flex-start;
+    margin-top: 10vh;
+    width: 75%;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .cart .nav--std {
+    flex-wrap: nowrap;
+  }
+  .cart .cart__items {
+    flex-basis: 100%;
+  }
+  .cart .cart__items .card__container {
+    width: 75%;
+  }
+
+  .cart .price-section {
+    align-self: flex-start;
+    margin-top: 10vh;
+    width: 50%;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  .cart .nav--std {
+    flex-wrap: nowrap;
+  }
+  .cart .cart__items {
+    flex-basis: 100%;
+  }
+  .cart .cart__items .card__container {
+    width: 50%;
+  }
+
+  .cart .price-section {
+    align-self: flex-start;
+    margin-top: 10vh;
+    width: 50%;
+  }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1366px) {
+  .cart .cart__items {
+    flex-basis: 100%;
+  }
+}

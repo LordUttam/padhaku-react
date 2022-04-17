@@ -51,8 +51,8 @@ const reducerFunc = (state, action) => {
           nonfiction: false,
         },
         covertype: {
-          hardcover: false,
-          paperback: false,
+          "Hard Cover": false,
+          Paperback: false,
         },
         rating: "0",
       };

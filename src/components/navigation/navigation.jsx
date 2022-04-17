@@ -1,6 +1,11 @@
+import "./navigation.css";
+import { useCart } from "contexts/cart-context";
+import { useWishlist } from "contexts/wishlist-context";
 import { Link } from "react-router-dom";
 
 export default function Navigation() {
+  const { cartState } = useCart();
+  const { wishlistState } = useWishlist();
   return (
     <header className="header--std">
       <nav className="nav--std flex__wrap--wrap">
@@ -24,13 +29,27 @@ export default function Navigation() {
             </Link>
           </li>
           <li className="header__btn m--x-0-5">
-            <Link to="/wishlist" className="p--x-1">
-              <i className="bx bxs-heart"></i>Wishlist
+            <Link to="/wishlist" className="p--x-1 badge-container">
+              <i className="bx bxs-heart wishlist-icon"></i>
+              {wishlistState.wishlistItems.length > 0 ? (
+                <span className="badge badge--small badge--top-right">
+                  <span className="badge__text">
+                    {wishlistState.wishlistItems.length}
+                  </span>
+                </span>
+              ) : null}
             </Link>
           </li>
           <li className="header__btn m--x-0-5">
             <Link to="/cart" className="p--x-1">
-              <i className="bx bxs-cart"></i>Cart
+              <i className="bx bxs-cart cart-icon"></i>
+              {cartState.cartItems.length > 0 ? (
+                <span className="badge badge--small badge--top-right">
+                  <span className="badge__text">
+                    {cartState.cartItems.length}
+                  </span>
+                </span>
+              ) : null}
             </Link>
           </li>
         </ul>

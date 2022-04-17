@@ -18,8 +18,8 @@ function ProductProvider({ children }) {
       nonfiction: false,
     },
     covertype: {
-      hardcover: false,
-      paperback: false,
+      "Hard Cover": false,
+      Paperback: false,
     },
     rating: "0",
   });

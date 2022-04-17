@@ -1,5 +1,5 @@
-import "./landing-page.css";
 import "styles/main.css";
+import "./landing-page.css";
 
 import { Navigation, Carousel, Featured, Trending, Footer } from "components";
 
