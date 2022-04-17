@@ -256,14 +256,18 @@ function CartCard({ productDetails }) {
 }
 
 function WishlistCard({ productDetails }) {
-  const { prodImg, bookTitle, author, price } = productDetails;
+  const { _id, prodImg, bookTitle, author, origPrice, price } = productDetails;
 
   const { wishlistDispatch } = useWishlist();
-  const { cartDispatch } = useCart();
+  const { cartState, cartDispatch } = useCart();
 
-  const moveToCart = (productDetails) => {
-    cartDispatch({ type: "ADD_ITEM", payload: productDetails });
-    wishlistDispatch({ type: "REMOVE_FROM_WISHLIST", payload: productDetails });
+  const addToCart = (productDetails) => {
+    const productInCart = checkProductIn(cartState.cartItems, _id);
+    if (productInCart) {
+      cartDispatch({ type: "INCREMENT_QTY", payload: productDetails });
+    } else {
+      cartDispatch({ type: "ADD_ITEM", payload: productDetails });
+    }
   };
 
   return (
@@ -276,15 +280,18 @@ function WishlistCard({ productDetails }) {
         <div className="card__header">
           <h2 className="card__title">{bookTitle}</h2>
           <h3 className="card__subtitle font--gray">{author}</h3>
-          <p className="card__text">{price}</p>
+          <p className="card__text">
+            <span className="text--strike text--gray">₹{origPrice}</span>
+            <span className="text--md text--bold">₹{price}</span>
+          </p>
         </div>
 
-        <div className="card__actions m--y-0-5 p--y-1 btn__container">
+        <div className="card__actions btn__container">
           <button
             className="btn btn--primary shadow-hover--none"
-            onClick={() => moveToCart(productDetails)}
+            onClick={() => addToCart(productDetails)}
           >
-            Move to cart
+            Add to cart
           </button>
           <button
             className="btn btn--outline shadow-hover--none"
