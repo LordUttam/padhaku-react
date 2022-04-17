@@ -1,5 +1,4 @@
 import "./product-listing.css";
-import "styles/main.css";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { Navigation, Sidebar, SidebarMobile, Footer } from "components";

@@ -1,3 +1,5 @@
 import LandingPage from "./LandingPage/LandingPage";
 import Products from "./ProductListing/ProductListing";
-export { LandingPage, Products };
+import Cart from "./Cart/Cart";
+import Wishlist from "./Wishlist/Wishlist";
+export { LandingPage, Products, Cart, Wishlist };
