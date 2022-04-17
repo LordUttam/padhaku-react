@@ -1,6 +1,6 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { LandingPage, Products, Cart, Wishlist } from "pages";
+import { LandingPage, Products, Cart, Wishlist, Login, Signup } from "pages";
 
 function App() {
   return (
@@ -11,6 +11,8 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Routes>
     </div>
   );
