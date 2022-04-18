@@ -4,9 +4,11 @@ import { useCart } from "contexts/cart-context";
 import { CartCard } from "components/cards/cards";
 import { useNavigate } from "react-router-dom";
 import { summaryGenerator } from "reducers/cart-reducer";
+import { useProducts } from "contexts/product-context";
 
 export default function Cart() {
   const { cartState } = useCart();
+  const { dispatch } = useProducts();
   const navigate = useNavigate();
   const { priceWithDiscount, priceWithoutDiscount } = summaryGenerator(
     cartState.cartItems
@@ -32,7 +34,10 @@ export default function Cart() {
             </span>
             <button
               className="btn btn--primary p--1 shadow-hover--none"
-              onClick={() => navigate("/products")}
+              onClick={() => {
+                dispatch({ type: "CLEAR_ALL" });
+                navigate("/products");
+              }}
             >
               Shop now
             </button>

@@ -3,13 +3,22 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "styles/carousel.css";
 import { carousel1, carousel2, carousel3 } from "data/carousel";
+import { useProducts } from "contexts/product-context";
 
 function CarouselSlide(props) {
+  const { dispatch } = useProducts();
   const carouselImg = props.carouselImg;
   return (
     <li className="carousel__slide">
       <Link to="/products">
-        <img src={carouselImg} alt="Sale poster" className="carousel__image" />
+        <img
+          src={carouselImg}
+          alt="Sale poster"
+          className="carousel__image"
+          onClick={() => {
+            dispatch({ type: "CLEAR_ALL" });
+          }}
+        />
       </Link>
     </li>
   );

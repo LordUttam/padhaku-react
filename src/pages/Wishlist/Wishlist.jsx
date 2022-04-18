@@ -3,10 +3,12 @@ import { Navigation, Footer } from "components";
 import { useWishlist } from "contexts/wishlist-context";
 import { WishlistCard } from "components/cards/cards";
 import { useNavigate } from "react-router-dom";
+import { useProducts } from "contexts/product-context";
 
 export default function Wishlist() {
   const { wishlistState } = useWishlist();
   const navigate = useNavigate();
+  const { dispatch } = useProducts();
   return (
     <>
       <Navigation />
@@ -21,7 +23,10 @@ export default function Wishlist() {
             </span>
             <button
               className="btn btn--primary p--1 m--1 shadow-hover--none"
-              onClick={() => navigate("/products")}
+              onClick={() => {
+                dispatch({ type: "CLEAR_ALL" });
+                navigate("/products");
+              }}
             >
               Shop now
             </button>

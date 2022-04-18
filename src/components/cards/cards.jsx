@@ -1,5 +1,6 @@
 import { useCart } from "contexts/cart-context";
 import { useWishlist } from "contexts/wishlist-context";
+import { useProducts } from "contexts/product-context";
 import { checkProductIn } from "operations/checkProductIn";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +9,15 @@ function FeaturedCard(props) {
   const imgAlt = props.featImgAlt;
   const cardTitle = props.cardTitle;
   const cardSubtitle = props.cardSubtitle;
+  const categoryId = props.categoryId;
+  const navigate = useNavigate();
+  const { dispatch } = useProducts();
+
+  const explore = () => {
+    dispatch({ type: "CLEAR_ALL" });
+    dispatch({ type: "CATEGORIES", payload: categoryId });
+    navigate("/products");
+  };
 
   return (
     <div className="card card--horizontal">
@@ -15,13 +25,19 @@ function FeaturedCard(props) {
         <img src={featImg} alt={imgAlt} />
       </div>
 
+      <h2 className="card__title h--3">{cardTitle}</h2>
+
       <div className="card__header">
-        <h2 className="card__title">{cardTitle}</h2>
         <h3 className="card__subtitle font--gray">{cardSubtitle}</h3>
       </div>
 
       <div className="card__actions m--y-0-5 p--y-1 btn__container">
-        <button className="btn btn--primary shadow-hover--none p--y-2">
+        <button
+          className="btn btn--primary shadow-hover--none p--y-2"
+          onClick={() => {
+            explore();
+          }}
+        >
           Explore
         </button>
       </div>
@@ -29,31 +45,59 @@ function FeaturedCard(props) {
   );
 }
 
-function TrendingCard(props) {
-  const trendImg = props.trendImg;
-  const bookTitle = props.bookTitle;
-  const author = props.author;
-  const price = props.price;
+function TrendingCard({ productDetails }) {
+  const { _id, prodImg, bookTitle, author, price, origPrice } = productDetails;
+  const { cartState, cartDispatch } = useCart();
+  const navigate = useNavigate();
+
+  const productInCart = checkProductIn(cartState.cartItems, _id);
+
+  const buyNow = () => {
+    if (!productInCart) {
+      cartDispatch({ type: "ADD_ITEM", payload: productDetails });
+      navigate("/cart");
+    } else navigate("/cart");
+  };
 
   return (
     <div className="card">
       <div className="card__image">
-        <img src={trendImg} alt={bookTitle} />
+        <img src={prodImg} alt={bookTitle} />
       </div>
 
       <div className="card__header">
         <h2 className="card__title">{bookTitle}</h2>
         <h3 className="card__subtitle font--gray">{author}</h3>
-        <h3 className="card__subtitle font--gray">{price}</h3>
+        <p className="card__text">
+          <span className="text--strike text--gray">₹{origPrice}</span>
+          <span className="text--md text--bold">₹{price}</span>
+        </p>
       </div>
 
-      <div className="card__actions m--y-0-5 p--y-1 btn__container">
-        <button className="btn btn--primary shadow-hover--none p--y-2">
+      <div className="card__actions p--y-1 btn__container">
+        <button
+          className="btn btn--primary shadow-hover--none p--y-2"
+          onClick={() => buyNow()}
+        >
           Buy Now
         </button>
-        <button className="btn btn--outline shadow-hover--none p--y-2">
-          Add to Cart
-        </button>
+        {productInCart ? (
+          <button
+            className="btn btn--outline shadow-hover--none p--y-2"
+            onClick={() => navigate("/cart")}
+          >
+            Go to Cart
+          </button>
+        ) : (
+          <button
+            className="btn btn--outline shadow-hover--none p--y-2"
+            onClick={() =>
+              cartDispatch({ type: "ADD_ITEM", payload: productDetails })
+            }
+          >
+            Add to Cart
+          </button>
+        )}
       </div>
     </div>
   );
