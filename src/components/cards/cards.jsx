@@ -17,7 +17,6 @@ function FeaturedCard(props) {
     dispatch({ type: "CLEAR_ALL" });
     dispatch({ type: "CATEGORIES", payload: categoryId });
     navigate("/products");
-    console.log(categoryId);
   };
 
   return (
