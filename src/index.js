@@ -8,7 +8,7 @@ import { makeServer } from "./server";
 import { ProductProvider } from "contexts/product-context";
 import { CartProvider } from "contexts/cart-context";
 import { WishlistProvider } from "contexts/wishlist-context";
-
+import { AuthProvider } from "contexts/auth-context";
 // Call make Server
 makeServer();
 
@@ -17,13 +17,15 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <Router>
-      <CartProvider>
-        <WishlistProvider>
-          <ProductProvider>
-            <App />
-          </ProductProvider>
-        </WishlistProvider>
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          <WishlistProvider>
+            <ProductProvider>
+              <App />
+            </ProductProvider>
+          </WishlistProvider>
+        </CartProvider>
+      </AuthProvider>
     </Router>
   </React.StrictMode>
 );

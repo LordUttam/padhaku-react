@@ -1,6 +1,8 @@
 import { useCart } from "contexts/cart-context";
 import { useWishlist } from "contexts/wishlist-context";
 import { useProducts } from "contexts/product-context";
+import { useAuth } from "contexts/auth-context";
+
 import { checkProductIn } from "operations/checkProductIn";
 import { useNavigate } from "react-router-dom";
 
@@ -117,10 +119,26 @@ function ProductCard({ productDetails }) {
   } = productDetails;
   const { wishlistState, wishlistDispatch } = useWishlist();
   const { cartState, cartDispatch } = useCart();
+  const { authData } = useAuth();
   const navigate = useNavigate();
-  const productInWishlist = checkProductIn(wishlistState.wishlistItems, _id);
 
+  const productInWishlist = checkProductIn(wishlistState.wishlistItems, _id);
   const productInCart = checkProductIn(cartState.cartItems, _id);
+
+  function SaveToWishlistHandler(productDetails) {
+    if (authData.isAuthenticated) {
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: productDetails,
+      });
+    } else {
+      navigate("/wishlist");
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: productDetails,
+      });
+    }
+  }
 
   const buyNow = () => {
     if (!productInCart) {
@@ -198,12 +216,7 @@ function ProductCard({ productDetails }) {
         ) : (
           <span
             className="card__heart-btn flex flex--center"
-            onClick={() =>
-              wishlistDispatch({
-                type: "ADD_TO_WISHLIST",
-                payload: productDetails,
-              })
-            }
+            onClick={() => SaveToWishlistHandler(productDetails)}
           >
             <i className="bx bx-heart"></i>
           </span>
