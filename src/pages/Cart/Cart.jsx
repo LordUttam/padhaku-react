@@ -90,7 +90,9 @@ export default function Cart() {
                 )}
               </div>
             </div>
-            <button className="btn btn--primary p--y-1">Place order</button>
+            <button className="btn btn--primary p--y-1">
+              Checkout <span>&#10140;</span>
+            </button>
           </div>
         </section>
       </main>

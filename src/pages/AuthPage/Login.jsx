@@ -1,11 +1,56 @@
 import "./auth.css";
 import { Navigation, Footer } from "components";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "contexts/auth-context";
+import axios from "axios";
 
 export default function Login() {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ emailAddress: "", password: "" });
+  const { authData, setAuthData } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const formHandler = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  async function LoginHandler(e) {
+    e.preventDefault();
+    try {
+      const response = await axios.post(`/api/auth/login`, {
+        email: formData.emailAddress,
+        password: formData.password,
+      });
+
+      const {
+        status,
+        data: { encodedToken, foundUser },
+      } = response;
+
+      if (status === 200) {
+        localStorage.setItem("token", encodedToken);
+        localStorage.setItem("user", JSON.stringify(foundUser));
+        setAuthData({
+          ...authData,
+          isAuthenticated: true,
+          user: foundUser,
+          token: encodedToken,
+        });
+      }
+
+      let wasRedirectedFrom = location.state?.from?.pathname || "/";
+      navigate(wasRedirectedFrom);
+    } catch (error) {
+      if (error.response.status === 401) {
+        alert(
+          "The email and password combination is wrong. Please check it again."
+        );
+      }
+    }
+  }
+
   useEffect(() => {
     document.title = "Padhaku | Login";
   }, []);
@@ -22,6 +67,7 @@ export default function Login() {
                 className="input input--text"
                 type="email"
                 placeholder="frequentbuyer@xmail.com"
+                onInput={(e) => formHandler("emailAddress", e.target.value)}
                 required
               />
             </div>
@@ -31,7 +77,7 @@ export default function Login() {
               <input
                 className="input input--text"
                 type={passwordVisible ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => formHandler("password", e.target.value)}
                 placeholder="*********"
                 required
               />
@@ -51,8 +97,10 @@ export default function Login() {
             </div>
             <button
               className="btn btn--primary p--1"
-              disabled={password.length < 8}
-              type="submit"
+              disabled={formData.password.length < 8}
+              onClick={(e) => {
+                LoginHandler(e);
+              }}
             >
               Login
             </button>

@@ -1,11 +1,34 @@
 import "./navigation.css";
 import { useCart } from "contexts/cart-context";
 import { useWishlist } from "contexts/wishlist-context";
-import { Link } from "react-router-dom";
+import { useAuth } from "contexts/auth-context";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navigation() {
-  const { cartState } = useCart();
-  const { wishlistState } = useWishlist();
+  const { cartState, cartDispatch } = useCart();
+  const { wishlistState, wishlistDispatch } = useWishlist();
+  const { authData, setAuthData } = useAuth();
+  const navigate = useNavigate();
+
+  function LogoutHandler() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setAuthData((authData) => ({
+      user: null,
+      token: null,
+      isAuthenticated: false,
+    }));
+    for (let item of wishlistState.wishlistItems) {
+      wishlistDispatch({
+        type: "REMOVE_FROM_WISHLIST",
+        payload: item,
+      });
+    }
+    for (let item of cartState.cartItems) {
+      cartDispatch({ type: "REMOVE_ITEM", payload: item });
+    }
+    navigate("/home");
+  }
   return (
     <header className="header--std">
       <nav className="nav--std flex__wrap--wrap">
@@ -24,9 +47,15 @@ export default function Navigation() {
         </div>
         <ul className="header__list--align-end">
           <li className="color--primary header__btn m--x-0-5">
-            <Link to="/login" className="p--x-1">
-              Login
-            </Link>
+            {authData.isAuthenticated ? (
+              <Link to="/home" className="p--x-1" onClick={LogoutHandler}>
+                Logout
+              </Link>
+            ) : (
+              <Link to="/login" className="p--x-1">
+                Login
+              </Link>
+            )}
           </li>
           <li className="header__btn m--x-0-5">
             <Link to="/wishlist" className="p--x-1 badge-container">

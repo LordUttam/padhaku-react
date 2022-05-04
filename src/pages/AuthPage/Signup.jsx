@@ -1,12 +1,60 @@
 import "./auth.css";
 import { Navigation, Footer } from "components";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "contexts/auth-context";
+import axios from "axios";
 
 export default function Signup() {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [password, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    emailAddress: "",
+    password: "",
+    confPassword: "",
+  });
+
+  const formHandler = (field, value) => {
+    setFormData({ ...formData, [field]: value });
+  };
+
+  const { authData, setAuthData } = useAuth();
+  const navigate = useNavigate();
+
+  async function SignupHandler(e) {
+    e.preventDefault();
+    try {
+      const response = await axios({
+        method: "post",
+        url: `/api/auth/signup`,
+        headers: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.emailAddress,
+          password: formData.password,
+        },
+      });
+      const {
+        status,
+        data: { encodedToken, foundUser },
+      } = response;
+      if (status === "200") {
+        localStorage.setItem("token", encodedToken);
+        localStorage.setItem("user", JSON.stringify(foundUser));
+        setAuthData({
+          ...authData,
+          isAuthenticated: true,
+          user: foundUser,
+          token: encodedToken,
+        });
+      }
+    } catch (errorMsg) {
+      console.error(errorMsg);
+    } finally {
+      navigate("/");
+    }
+  }
 
   useEffect(() => {
     document.title = "Padhaku | Signup";
@@ -24,6 +72,7 @@ export default function Signup() {
                 className="input input--text"
                 type="text"
                 placeholder="First Name"
+                onInput={(e) => formHandler("firstName", e.target.value)}
                 required
               />
             </div>
@@ -34,6 +83,7 @@ export default function Signup() {
                 className="input input--text"
                 type="text"
                 placeholder="Last Name"
+                onInput={(e) => formHandler("lastName", e.target.value)}
               />
             </div>
 
@@ -43,6 +93,7 @@ export default function Signup() {
                 className="input input--text"
                 type="email"
                 placeholder="frequentbuyer@xmail.com"
+                onInput={(e) => formHandler("emailAddress", e.target.value)}
                 required
               />
             </div>
@@ -53,7 +104,7 @@ export default function Signup() {
                 className="input input--text"
                 type={passwordVisible ? "text" : "password"}
                 placeholder="*********"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => formHandler("password", e.target.value)}
                 required
               />
               <span onClick={() => setPasswordVisible(!passwordVisible)}>
@@ -71,7 +122,7 @@ export default function Signup() {
                 className="input input--text"
                 type="password"
                 placeholder="*********"
-                onChange={(e) => setConfPassword(e.target.value)}
+                onChange={(e) => formHandler("confPassword", e.target.value)}
                 required
               />
             </div>
@@ -90,8 +141,13 @@ export default function Signup() {
 
             <button
               className="btn btn--primary p--1"
-              disabled={password.length < 8 || password !== confPassword}
-              type="submit"
+              disabled={
+                formData.password.length < 8 ||
+                formData.password !== formData.confPassword
+              }
+              onClick={(e) => {
+                SignupHandler(e);
+              }}
             >
               Register
             </button>

@@ -9,6 +9,9 @@ export default function Wishlist() {
   const { wishlistState } = useWishlist();
   const navigate = useNavigate();
   const { dispatch } = useProducts();
+
+  const wishlist = Array.from(new Set(wishlistState.wishlistItems));
+
   return (
     <>
       <Navigation />
@@ -33,7 +36,7 @@ export default function Wishlist() {
           </section>
         ) : (
           <section className="flex flex__wrap--wrap justify--start items--start p--x-2 p--y-2">
-            {wishlistState.wishlistItems.map((product) => (
+            {wishlist.map((product) => (
               <WishlistCard productDetails={product} key={product._id} />
             ))}
           </section>
