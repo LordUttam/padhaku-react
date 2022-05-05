@@ -25,27 +25,23 @@ export default function Signup() {
   async function SignupHandler(e) {
     e.preventDefault();
     try {
-      const response = await axios({
-        method: "post",
-        url: `/api/auth/signup`,
-        headers: {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.emailAddress,
-          password: formData.password,
-        },
+      const response = await axios.post(`/api/auth/signup`, {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.emailAddress,
+        password: formData.password,
       });
       const {
         status,
-        data: { encodedToken, foundUser },
+        data: { encodedToken, createdUser },
       } = response;
-      if (status === "200") {
+      if (Number(status) >= 200 && Number(status) <= 299) {
         localStorage.setItem("token", encodedToken);
-        localStorage.setItem("user", JSON.stringify(foundUser));
+        localStorage.setItem("user", JSON.stringify(createdUser));
         setAuthData({
           ...authData,
           isAuthenticated: true,
-          user: foundUser,
+          user: createdUser,
           token: encodedToken,
         });
       }
@@ -104,7 +100,7 @@ export default function Signup() {
                 className="input input--text"
                 type={passwordVisible ? "text" : "password"}
                 placeholder="*********"
-                onChange={(e) => formHandler("password", e.target.value)}
+                onInput={(e) => formHandler("password", e.target.value)}
                 required
               />
               <span onClick={() => setPasswordVisible(!passwordVisible)}>
