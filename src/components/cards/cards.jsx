@@ -2,8 +2,12 @@ import { useCart } from "contexts/cart-context";
 import { useWishlist } from "contexts/wishlist-context";
 import { useProducts } from "contexts/product-context";
 import { useAuth } from "contexts/auth-context";
-
-import { checkProductIn } from "operations/checkProductIn";
+import {
+  checkProductIn,
+  postCartApi,
+  postWishlistApi,
+  deleteFromWishlistApi,
+} from "operations";
 import { useNavigate } from "react-router-dom";
 
 function FeaturedCard(props) {
@@ -48,17 +52,31 @@ function FeaturedCard(props) {
 }
 
 function TrendingCard({ productDetails }) {
-  const { _id, prodImg, bookTitle, author, price, origPrice } = productDetails;
+  const { prodImg, bookTitle, author, price, origPrice } = productDetails;
   const { cartState, cartDispatch } = useCart();
+  const { authData } = useAuth();
   const navigate = useNavigate();
 
-  const productInCart = checkProductIn(cartState.cartItems, _id);
+  const productInCart = checkProductIn(cartState.cartItems, productDetails);
+
+  const addToCart = async (productDetails) => {
+    if (authData.isAuthenticated) {
+      try {
+        await postCartApi(productDetails, authData.token);
+        cartDispatch({ type: "ADD_ITEM", payload: productDetails });
+      } catch (errorMsg) {
+        console.error(errorMsg);
+      }
+    } else {
+      navigate("/login");
+    }
+  };
 
   const buyNow = () => {
     if (!productInCart) {
-      cartDispatch({ type: "ADD_ITEM", payload: productDetails });
-      navigate("/cart");
-    } else navigate("/cart");
+      addToCart(productDetails);
+    }
+    navigate("/cart");
   };
 
   return (
@@ -93,9 +111,7 @@ function TrendingCard({ productDetails }) {
         ) : (
           <button
             className="btn btn--outline shadow-hover--none p--y-2"
-            onClick={() =>
-              cartDispatch({ type: "ADD_ITEM", payload: productDetails })
-            }
+            onClick={() => addToCart(productDetails)}
           >
             Add to Cart
           </button>
@@ -107,7 +123,6 @@ function TrendingCard({ productDetails }) {
 
 function ProductCard({ productDetails }) {
   const {
-    _id,
     prodImg,
     bookTitle,
     author,
@@ -121,30 +136,58 @@ function ProductCard({ productDetails }) {
   const { cartState, cartDispatch } = useCart();
   const { authData } = useAuth();
   const navigate = useNavigate();
+  const productInWishlist = checkProductIn(
+    wishlistState.wishlistItems,
+    productDetails
+  );
+  const productInCart = checkProductIn(cartState.cartItems, productDetails);
 
-  const productInWishlist = checkProductIn(wishlistState.wishlistItems, _id);
-  const productInCart = checkProductIn(cartState.cartItems, _id);
-
-  function SaveToWishlistHandler(productDetails) {
+  const addToCart = async (productDetails) => {
     if (authData.isAuthenticated) {
-      wishlistDispatch({
-        type: "ADD_TO_WISHLIST",
-        payload: productDetails,
-      });
+      try {
+        await postCartApi(productDetails, authData.token);
+        cartDispatch({ type: "ADD_ITEM", payload: productDetails });
+      } catch (errorMsg) {
+        console.error(errorMsg);
+      }
+    } else {
+      navigate("/login");
+    }
+  };
+
+  const SaveToWishlist = async (productDetails) => {
+    if (authData.isAuthenticated) {
+      try {
+        await postWishlistApi(productDetails, authData.token);
+        wishlistDispatch({
+          type: "ADD_TO_WISHLIST",
+          payload: productDetails,
+        });
+      } catch (errorMsg) {
+        console.error(errorMsg);
+      }
     } else {
       navigate("/wishlist");
+    }
+  };
+
+  const removeFromWishlist = async (productDetails) => {
+    try {
+      await deleteFromWishlistApi(productDetails._id, authData.token);
       wishlistDispatch({
-        type: "ADD_TO_WISHLIST",
+        type: "REMOVE_FROM_WISHLIST",
         payload: productDetails,
       });
+    } catch (errorMsg) {
+      console.error(errorMsg);
     }
-  }
+  };
 
   const buyNow = () => {
     if (!productInCart) {
-      cartDispatch({ type: "ADD_ITEM", payload: productDetails });
-      navigate("/cart");
-    } else navigate("/cart");
+      addToCart(productDetails);
+    }
+    navigate("/cart");
   };
 
   return (
@@ -192,9 +235,9 @@ function ProductCard({ productDetails }) {
           ) : (
             <button
               className="btn btn--outline shadow-hover--none p--y-2"
-              onClick={() =>
-                cartDispatch({ type: "ADD_ITEM", payload: productDetails })
-              }
+              onClick={() => {
+                addToCart(productDetails);
+              }}
             >
               Add to Cart
             </button>
@@ -204,19 +247,14 @@ function ProductCard({ productDetails }) {
         {productInWishlist ? (
           <span
             className="card__heart-btn flex flex--center"
-            onClick={() =>
-              wishlistDispatch({
-                type: "REMOVE_FROM_WISHLIST",
-                payload: productDetails,
-              })
-            }
+            onClick={() => removeFromWishlist(productDetails)}
           >
             <i className="bx bxs-heart"></i>
           </span>
         ) : (
           <span
             className="card__heart-btn flex flex--center"
-            onClick={() => SaveToWishlistHandler(productDetails)}
+            onClick={() => SaveToWishlist(productDetails)}
           >
             <i className="bx bx-heart"></i>
           </span>
@@ -226,16 +264,15 @@ function ProductCard({ productDetails }) {
   );
 }
 
-function CartCard({ productDetails }) {
+function CartCard({
+  productDetails,
+  decrementItemQty,
+  incrementItemQty,
+  saveForLater,
+  removeFromCart,
+}) {
   const { prodImg, bookTitle, author, price, origPrice, coverType, quantity } =
     productDetails;
-
-  const { cartDispatch } = useCart();
-  const { wishlistDispatch } = useWishlist();
-  const saveForLater = () => {
-    cartDispatch({ type: "REMOVE_ITEM", payload: productDetails });
-    wishlistDispatch({ type: "ADD_TO_WISHLIST", payload: productDetails });
-  };
 
   return (
     <div className="card__container justify--center items--center m--y-1">
@@ -260,29 +297,14 @@ function CartCard({ productDetails }) {
             </label>
             <button
               className="btn btn--primary"
-              onClick={() =>
-                quantity > 1
-                  ? cartDispatch({
-                      type: "DECREMENT_QTY",
-                      payload: productDetails,
-                    })
-                  : cartDispatch({
-                      type: "REMOVE_ITEM",
-                      payload: productDetails,
-                    })
-              }
+              onClick={() => decrementItemQty(productDetails)}
             >
               -
             </button>
             <span>{quantity}</span>
             <button
               className="btn btn--primary"
-              onClick={() =>
-                cartDispatch({
-                  type: "INCREMENT_QTY",
-                  payload: productDetails,
-                })
-              }
+              onClick={() => incrementItemQty(productDetails)}
             >
               +
             </button>
@@ -291,15 +313,15 @@ function CartCard({ productDetails }) {
           <div className="card__actions flex items--center m--0 p--0">
             <button
               className="btn btn--link text--sm text--light"
-              onClick={() => saveForLater()}
+              onClick={() => saveForLater(productDetails)}
             >
               Save for Later
             </button>
             <button
               className="btn btn--link  text--xs text--light"
-              onClick={() =>
-                cartDispatch({ type: "REMOVE_ITEM", payload: productDetails })
-              }
+              onClick={() => {
+                removeFromCart(productDetails._id);
+              }}
             >
               Remove
             </button>
@@ -312,20 +334,8 @@ function CartCard({ productDetails }) {
   );
 }
 
-function WishlistCard({ productDetails }) {
-  const { _id, prodImg, bookTitle, author, origPrice, price } = productDetails;
-
-  const { wishlistDispatch } = useWishlist();
-  const { cartState, cartDispatch } = useCart();
-
-  const addToCart = (productDetails) => {
-    const productInCart = checkProductIn(cartState.cartItems, _id);
-    if (productInCart) {
-      cartDispatch({ type: "INCREMENT_QTY", payload: productDetails });
-    } else {
-      cartDispatch({ type: "ADD_ITEM", payload: productDetails });
-    }
-  };
+function WishlistCard({ productDetails, wishlistToCart, removeFromWishlist }) {
+  const { prodImg, bookTitle, author, origPrice, price } = productDetails;
 
   return (
     <div className="card__container justify--center items--center m--y-1">
@@ -346,18 +356,13 @@ function WishlistCard({ productDetails }) {
         <div className="card__actions btn__container">
           <button
             className="btn btn--primary shadow-hover--none"
-            onClick={() => addToCart(productDetails)}
+            onClick={() => wishlistToCart(productDetails)}
           >
-            Add to cart
+            Add to Cart
           </button>
           <button
             className="btn btn--outline shadow-hover--none"
-            onClick={() =>
-              wishlistDispatch({
-                type: "REMOVE_FROM_WISHLIST",
-                payload: productDetails,
-              })
-            }
+            onClick={() => removeFromWishlist(productDetails)}
           >
             Remove from Wishlist
           </button>
