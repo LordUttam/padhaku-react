@@ -11,6 +11,7 @@ import {
   categoryFilter,
   coverTypeFilter,
   ratingFilter,
+  searchFilter,
 } from "operations";
 import { useProducts } from "contexts/product-context";
 
@@ -18,7 +19,11 @@ export default function Products() {
   const [products, setProducts] = useState([]);
   const { state } = useProducts();
 
-  const includeOutStockProds = stockFilter(products, state.includeOutStock);
+  const searchedItems = searchFilter(products, state.search);
+  const includeOutStockProds = stockFilter(
+    searchedItems,
+    state.includeOutStock
+  );
   const fastDelivery = speedFilter(includeOutStockProds, state.shouldBeFast);
   const sortedData = sorter(fastDelivery, state.sortBy);
   const priceFilteredData = priceFilter(sortedData, state.price);
