@@ -1,6 +1,14 @@
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import { LandingPage, Products, Cart, Wishlist, Login, Signup } from "pages";
+import {
+  LandingPage,
+  Products,
+  Cart,
+  Wishlist,
+  Login,
+  Signup,
+  NotFound,
+} from "pages";
 import RequiresAuth from "components/RequiresAuth";
 
 function App() {
@@ -10,24 +18,13 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/home" element={<LandingPage />} />
         <Route path="/products" element={<Products />} />
-        <Route
-          path="/wishlist"
-          element={
-            <RequiresAuth>
-              <Wishlist />
-            </RequiresAuth>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <RequiresAuth>
-              <Cart />
-            </RequiresAuth>
-          }
-        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/" element=<RequiresAuth />>
+          <Route path="/cart" element=<Cart /> />
+          <Route path="/wishlist" element=<Wishlist /> />
+        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

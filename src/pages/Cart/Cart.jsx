@@ -1,15 +1,83 @@
 import "./cart.css";
 import { Navigation, Footer } from "components";
 import { useCart } from "contexts/cart-context";
+import { useWishlist } from "contexts/wishlist-context";
+import { useAuth } from "contexts/auth-context";
 import { CartCard } from "components/cards/cards";
 import { useNavigate } from "react-router-dom";
 import { summaryGenerator } from "reducers/cart-reducer";
 import { useProducts } from "contexts/product-context";
+import { deleteFromCartApi, updateCartApi, postWishlistApi } from "operations";
 
 export default function Cart() {
-  const { cartState } = useCart();
-  const { dispatch } = useProducts();
   const navigate = useNavigate();
+  const { dispatch } = useProducts();
+  const { authData } = useAuth();
+  const { wishlistDispatch } = useWishlist();
+  const { cartState, cartDispatch } = useCart();
+
+  async function saveToWishlist(productDetails) {
+    if (authData.isAuthenticated) {
+      try {
+        await postWishlistApi(productDetails, authData.token);
+      } catch (errorMsg) {
+        console.error(errorMsg);
+      }
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: productDetails,
+      });
+    } else {
+      navigate("/wishlist");
+      wishlistDispatch({
+        type: "ADD_TO_WISHLIST",
+        payload: productDetails,
+      });
+    }
+  }
+
+  const removeFromCart = async (productID) => {
+    try {
+      await deleteFromCartApi(productID, authData.token);
+      cartDispatch({ type: "REMOVE_ITEM", payload: productID });
+    } catch (errorMsg) {
+      console.error(errorMsg);
+    }
+  };
+
+  const updateCartHandler = async (productID, actionType) => {
+    try {
+      await updateCartApi(productID, actionType, authData.token);
+    } catch (errorMsg) {
+      console.error(errorMsg);
+    }
+  };
+
+  const decrementItemQty = async (productDetails) => {
+    if (productDetails.quantity > 1) {
+      updateCartHandler(productDetails._id, "decrement");
+      cartDispatch({
+        type: "DECREMENT_QTY",
+        payload: productDetails,
+      });
+    } else {
+      removeFromCart(productDetails._id);
+    }
+  };
+
+  const incrementItemQty = async (productDetails) => {
+    updateCartHandler(productDetails._id, "increment");
+    cartDispatch({
+      type: "INCREMENT_QTY",
+      payload: productDetails,
+    });
+  };
+
+  const saveForLater = (productDetails) => {
+    removeFromCart(productDetails._id);
+    saveToWishlist(productDetails);
+  };
+
   const { priceWithDiscount, priceWithoutDiscount } = summaryGenerator(
     cartState.cartItems
   );
@@ -23,12 +91,19 @@ export default function Cart() {
           <section className="cart__items flex flex__dir--col items--center justify--space-around p--x-2 p--y-2">
             <h2 className="h--2 cart__heading m__t-1 m__b-0">My Cart</h2>
             {cartState.cartItems.map((product) => (
-              <CartCard productDetails={product} key={product._id} />
+              <CartCard
+                productDetails={product}
+                key={product._id}
+                incrementItemQty={incrementItemQty}
+                decrementItemQty={decrementItemQty}
+                saveForLater={saveForLater}
+                removeFromCart={removeFromCart}
+              />
             ))}
           </section>
         ) : (
           <section className="cart__items flex flex__dir--col items--center justify--center p--x-2 p--y-2">
-            <span className="text-center">
+            <span className="text--center">
               <p className="text--lg text--bold">Your cart is empty :(</p>
               <p className="text--md">Add items to cart now!</p>
             </span>

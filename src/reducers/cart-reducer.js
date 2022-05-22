@@ -1,35 +1,60 @@
 const cartReducer = (cartState, action) => {
   switch (action.type) {
-    case "ADD_ITEM":
+    case "ADD_ITEM": {
+      let cart = [...cartState.cartItems, { ...action.payload, quantity: 1 }];
+      localStorage.setItem("cart", JSON.stringify(cart));
       return {
         ...cartState,
-        cartItems: [...cartState.cartItems, { ...action.payload, quantity: 1 }],
+        cartItems: cart,
       };
-    case "REMOVE_ITEM":
+    }
+    case "REMOVE_ITEM": {
+      let cart = cartState.cartItems.filter(
+        (product) => product._id !== action.payload
+      );
+      localStorage.setItem("cart", JSON.stringify(cart));
       return {
         ...cartState,
-        cartItems: cartState.cartItems.filter(
-          (product) => product._id !== action.payload._id
-        ),
+        cartItems: cart,
       };
-    case "INCREMENT_QTY":
+    }
+    case "INCREMENT_QTY": {
+      let cart = cartState.cartItems.map((product) =>
+        product._id === action.payload._id
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      );
+      localStorage.setItem("cart", JSON.stringify(cart));
       return {
         ...cartState,
-        cartItems: cartState.cartItems.map((product) =>
-          product._id === action.payload._id
-            ? { ...product, quantity: product.quantity + 1 }
-            : product
-        ),
+        cartItems: cart,
       };
-    case "DECREMENT_QTY":
+    }
+    case "DECREMENT_QTY": {
+      let cart = cartState.cartItems.map((product) =>
+        product._id === action.payload._id
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      );
+      localStorage.setItem("cart", JSON.stringify(cart));
       return {
         ...cartState,
-        cartItems: cartState.cartItems.map((product) =>
-          product._id === action.payload._id
-            ? { ...product, quantity: product.quantity - 1 }
-            : product
-        ),
+        cartItems: cart,
       };
+    }
+    case "SET_CART":
+      return {
+        ...cartState,
+        cartItems: [...action.payload],
+      };
+
+    case "CLEAR_CART": {
+      localStorage.setItem("cart", JSON.stringify([]));
+      return {
+        ...cartState,
+        cartItems: [],
+      };
+    }
 
     default:
       return { ...cartState };

@@ -13,8 +13,8 @@ function SortComponent() {
           <input
             id="htlBtn"
             type="radio"
-            checked={sortBy === "HTL"}
-            onChange={() => dispatch({ type: "SORT", payload: "HTL" })}
+            checked={sortBy === "HIGH_TO_LOW"}
+            onChange={() => dispatch({ type: "SORT", payload: "HIGH_TO_LOW" })}
           />
           <label htmlFor="htlBtn">High to Low</label>
         </li>
@@ -22,8 +22,8 @@ function SortComponent() {
           <input
             id="lthBtn"
             type="radio"
-            checked={sortBy === "LTH"}
-            onChange={() => dispatch({ type: "SORT", payload: "LTH" })}
+            checked={sortBy === "LOW_TO_HIGH"}
+            onChange={() => dispatch({ type: "SORT", payload: "LOW_TO_HIGH" })}
           />
 
           <label htmlFor="lthBtn">Low to High</label>

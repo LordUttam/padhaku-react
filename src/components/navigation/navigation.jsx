@@ -13,20 +13,16 @@ export default function Navigation() {
   function LogoutHandler() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    localStorage.removeItem("cart");
+    localStorage.removeItem("wishlist");
+    cartDispatch({ type: "CLEAR_CART" });
+    wishlistDispatch({ type: "CLEAR_WISHLIST" });
+
     setAuthData((authData) => ({
       user: null,
       token: null,
       isAuthenticated: false,
     }));
-    for (let item of wishlistState.wishlistItems) {
-      wishlistDispatch({
-        type: "REMOVE_FROM_WISHLIST",
-        payload: item,
-      });
-    }
-    for (let item of cartState.cartItems) {
-      cartDispatch({ type: "REMOVE_ITEM", payload: item });
-    }
     navigate("/home");
   }
   return (

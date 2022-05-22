@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { wishlistReducer } from "reducers/wishlist-reducer";
 
 const defaultWishlistValue = { wishlistItems: [] };
@@ -9,6 +9,10 @@ function WishlistProvider({ children }) {
     wishlistReducer,
     defaultWishlistValue
   );
+  useEffect(() => {
+    let wishlist = JSON.parse(localStorage.getItem("wishlist"));
+    wishlistDispatch({ type: "SET_WISHLIST", payload: wishlist || [] });
+  }, []);
   return (
     <WishlistContext.Provider value={{ wishlistState, wishlistDispatch }}>
       {children}

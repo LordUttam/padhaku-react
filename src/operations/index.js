@@ -7,6 +7,18 @@ import {
   coverTypeFilter,
   ratingFilter,
 } from "./filter";
+import { checkProductIn } from "./checkProductIn.js";
+import {
+  getCartApi,
+  postCartApi,
+  deleteFromCartApi,
+  updateCartApi,
+} from "./cart-api";
+import {
+  getWishlistApi,
+  postWishlistApi,
+  deleteFromWishlistApi,
+} from "./wishlist-api";
 export {
   sorter,
   stockFilter,
@@ -15,4 +27,12 @@ export {
   categoryFilter,
   coverTypeFilter,
   ratingFilter,
+  checkProductIn,
+  getCartApi,
+  postCartApi,
+  deleteFromCartApi,
+  updateCartApi,
+  getWishlistApi,
+  postWishlistApi,
+  deleteFromWishlistApi,
 };
