@@ -5,10 +5,9 @@ export default function Search() {
   const navigate = useNavigate();
   const { dispatch } = useProducts();
   const [searchTerm, setSearchTerm] = useState("");
-  const searchItem = () => {
-    navigate("/products");
-    console.log("searhcin");
+  const searchHandler = () => {
     dispatch({ type: "SEARCH", payload: searchTerm });
+    navigate("/products");
   };
 
   return (
@@ -19,9 +18,10 @@ export default function Search() {
           className="input"
           placeholder="Search Here"
           onInput={(e) => setSearchTerm(e.target.value)}
+          onKeyPress={(e) => e.key === "Enter" && searchHandler()}
         />
       </div>
-      <button className="search__btn" onClick={searchItem}>
+      <button className="search__btn" onClick={searchHandler}>
         <i className="bx bx-search"></i>
       </button>
     </div>
