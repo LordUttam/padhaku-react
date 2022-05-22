@@ -22,6 +22,7 @@ function ProductProvider({ children }) {
       Paperback: false,
     },
     rating: "0",
+    search: "",
   });
 
   return (

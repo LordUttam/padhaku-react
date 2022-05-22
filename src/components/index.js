@@ -8,6 +8,7 @@ import Footer from "components/footer";
 import Featured from "components/landing-components/featured";
 import Trending from "components/landing-components/trending";
 import { Sidebar, SidebarMobile } from "components/sidebar/sidebar";
+import Search from "components/Search/Search";
 export {
   Carousel,
   CarouselSlide,
@@ -18,4 +19,5 @@ export {
   Trending,
   Sidebar,
   SidebarMobile,
+  Search,
 };

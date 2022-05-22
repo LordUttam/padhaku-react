@@ -3,6 +3,7 @@ import { useCart } from "contexts/cart-context";
 import { useWishlist } from "contexts/wishlist-context";
 import { useAuth } from "contexts/auth-context";
 import { Link, useNavigate } from "react-router-dom";
+import { Search } from "components";
 
 export default function Navigation() {
   const { cartState, cartDispatch } = useCart();
@@ -37,14 +38,7 @@ export default function Navigation() {
             <Link to="/home">Padhaku</Link>
           </li>
         </ul>
-        <div className="search__container flex items--center justify--center">
-          <div className="input__container flex--inline">
-            <input type="text" className="input" placeholder="Search Here" />
-          </div>
-          <button className="search__btn">
-            <i className="bx bx-search"></i>
-          </button>
-        </div>
+        <Search />
         <ul className="header__list--align-end">
           <li className="color--primary header__btn m--x-0-5">
             {authData.isAuthenticated ? (

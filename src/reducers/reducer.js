@@ -36,6 +36,12 @@ const reducerFunc = (state, action) => {
         rating: action.payload,
       };
 
+    case "SEARCH":
+      return {
+        ...state,
+        search: action.payload,
+      };
+
     case "CLEAR_ALL":
       return {
         ...state,
@@ -55,6 +61,7 @@ const reducerFunc = (state, action) => {
           Paperback: false,
         },
         rating: "0",
+        search: "",
       };
 
     default:

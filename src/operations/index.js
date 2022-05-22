@@ -6,6 +6,7 @@ import {
   categoryFilter,
   coverTypeFilter,
   ratingFilter,
+  searchFilter,
 } from "./filter";
 export {
   sorter,
@@ -15,4 +16,5 @@ export {
   categoryFilter,
   coverTypeFilter,
   ratingFilter,
+  searchFilter,
 };

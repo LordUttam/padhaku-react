@@ -30,6 +30,16 @@ const ratingFilter = (products, ratings) => {
   );
 };
 
+const searchFilter = (products, searchTerm) => {
+  const searchExp = new RegExp(searchTerm, "i");
+  return products.filter(
+    (product) =>
+      searchExp.test(product.bookTitle) ||
+      searchExp.test(product.author) ||
+      searchExp.test(product.categoryName)
+  );
+};
+
 export {
   stockFilter,
   speedFilter,
@@ -37,4 +47,5 @@ export {
   categoryFilter,
   coverTypeFilter,
   ratingFilter,
+  searchFilter,
 };
